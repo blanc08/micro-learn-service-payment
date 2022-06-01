@@ -13,13 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('orders', function (Blueprint $table) {
+        Schema::create('payment_logs', function (Blueprint $table) {
             $table->id();
-            $table->string('status')->default('pending');
-            $table->integer('user_id');
-            $table->integer('course_id');
-            $table->string('snap_url')->nullable();
-            $table->json('metadata')->nullable();
+            $table->string('status');
+            $table->string('payment_type');
+            $table->json('raw_response');
+            $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -31,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('orders');
+        Schema::dropIfExists('payment_logs');
     }
 };
